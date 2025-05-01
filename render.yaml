@@ -1,12 +1,18 @@
 services:
   - type: web
-    name: laravel-app
+    name: invite-app
     env: php
-    buildCommand: "composer install && php artisan migrate --force && php artisan optimize:clear && php artisan db:seed"
-    startCommand: "php artisan serve --host=0.0.0.0 --port=10000"
+    buildCommand: |
+      composer install --no-dev
+      php artisan key:generate
+      php artisan migrate --force
+    startCommand: php artisan serve --host=0.0.0.0 --port=10000
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
         generateValue: true
-      
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: sqlite
