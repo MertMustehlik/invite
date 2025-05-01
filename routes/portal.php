@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Portal\AuthController;
+use App\Http\Controllers\Portal\Auth\AuthController;
+use App\Http\Controllers\Portal\Auth\GoogleController;
 use App\Http\Controllers\Portal\CityController;
 use App\Http\Controllers\Portal\EventController;
 use App\Http\Controllers\Portal\DistrictController;
@@ -12,6 +13,9 @@ Route::group(['prefix' => '/auth', 'as' => 'auth.', 'controller' => AuthControll
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginPost')->name('login-post');
     Route::post('/log-out', 'logOutPost')->name('logout-post');
+
+    Route::get('/google', [GoogleController::class, 'redirectToGoogle']);
+    Route::get('/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -41,4 +45,3 @@ Route::group(['prefix' => '/cities', 'as' => 'cities.'], function () {
 Route::group(['prefix' => '/districts', 'as' => 'districts.'], function () {
     Route::get('/search', [DistrictController::class, 'search'])->name('search');
 });
-
